@@ -2,15 +2,16 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import MainView from "../../components/MainView";
-import { StateContext, DispatchContext } from "../../context";
+import { StateContext, DispatchContext } from "../../context/state";
+import { DataloggerContext } from "../../context/datalogger";
 import { 
     startRecording, 
-    stopRecording, 
-    positionUpdate 
+    stopRecording
 } from "../../model/actions";
 import { elapsedMSToHHMM } from "../../model/utils";
 import RecordButton from "../../components/RecordButton";
 import { FaInfoCircle, FaCogs, FaRoute } from "react-icons/fa";
+import { KeepAwake } from "@capacitor-community/keep-awake";
 
 const styles = {
     aboutButton: {
@@ -40,11 +41,16 @@ const styles = {
 const View = () => {
     const state = useContext(StateContext);
     const dispatch = useContext(DispatchContext);
+    const datalogger = useContext(DataloggerContext);
 
     const handleButtonClick = () => {
         if(state.recordingState === "IDLE"){
+            KeepAwake.keepAwake();
             startRecording(dispatch);
+            datalogger.start();
         }else{
+            KeepAwake.allowSleep();
+            datalogger.stop();
             stopRecording(dispatch);
         }
     };
@@ -64,12 +70,12 @@ const View = () => {
                 </Link>
             </Box>
             <Box sx={styles.configButton}>
-                <Link to={'/config'}>
+                <Link to={'/settings'}>
                     <FaCogs size="40px" color="rgb(100,100,100)"/>
                 </Link>
             </Box>
             <Box sx={styles.recordsButton}>
-                <Link to={'/routes'}>
+                <Link to={'/records'}>
                     <FaRoute size="40px" color="rgb(100,100,100)"/>
                 </Link>
             </Box>

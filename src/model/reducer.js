@@ -12,22 +12,22 @@ export const reducer = (prevState, action) => {
         case "START_RECORDING": {
             return {
                 ...prevState,
-                recordingState: "RECORDING"
+                recordingState: "RECORDING",
+                recordingDuration: 0,
+                recordingDistance: 0
             };
         }
         case "STOP_RECORDING": {
             return {
                 ...prevState,
-                recordingState: "IDLE",
-                recordingDuration: 0,
-                recordingDistance: 0
+                recordingState: "IDLE"
             }
         }
         case "POSITION_UPDATE": {
             return {
                 ...prevState,
-                recordingDistance: prevState.recordingDistance+action.payload.stepDistance,
-                recordingDuration: prevState.recordingDuration+action.payload.stepDuration
+                recordingDistance: action.payload.distance,
+                recordingDuration: action.payload.elapsed
             }
         }
     }

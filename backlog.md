@@ -2,11 +2,18 @@
 
 ### v1.0.0:  
   - [x] Creación del repositorio GitHub.  
+  - [ ] Icono y logo de la app.  
   - [x] Boilerplate Vite, React, MUI, react-icons, react-router-dom  
-  - [ ] Vistas Home y Acerca De.  
-  - [ ] Visualización de rutas en mapa.  
-  - [ ] Dibujado de rutas sobre el mapa.  
-  - [ ] Envio de GeoJSON a la API.  
-  - [ ] Dibujado de la respuesta de la API en mapa.  
-  - [ ] Información adicional.  
+  - [x] Vistas Home, Acerca De, Registros y Configuración.  
+  - [x] Iniciar y detener grabación de ubicación.  
+  - [ ] Sincronizar registros con API de Quandra.  
+  - [ ] Detener automáticamente luego de unos minutos sin desplazamientos.  
+  - [x] Mantener pantalla activa durante la grabación.  
+  - [ ] Guardar rutas al finalizar cada grabación.  
+  - [ ] Listar rutas guardadas.  
+  - [ ] Fondos de pantalla.  
+  - [ ] Página de producto.  
+  - [ ] Publicar términos y condiciones en la página.  
+  - [ ] Compilar apk y probar versión debug.  
+  - [ ] Compilar bundle y publicar.  
   

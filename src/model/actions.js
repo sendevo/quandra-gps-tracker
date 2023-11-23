@@ -1,4 +1,3 @@
-
 export const startRecording = dispatch => {
     dispatch({
         type: 'START_RECORDING'
@@ -11,10 +10,9 @@ export const stopRecording = dispatch => {
     });
 };
 
-export const positionUpdate = (dispatch, step) => {
-    const {stepDistance, stepDuration} = step;
+export const positionUpdate = (dispatch, payload) => {
     dispatch({
         type: 'POSITION_UPDATE',
-        payload: {stepDistance, stepDuration}
+        payload
     });
 };

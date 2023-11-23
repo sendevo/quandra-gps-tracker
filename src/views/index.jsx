@@ -1,10 +1,19 @@
 import About from "./About";
+import Records from "./Records";
+import Settings from "./Settings";
 
 const views = [
     {
         path: "/about",
-        homeTitle: "Información y ayuda",
         component: <About />
+    },
+    {
+        path: "/settings",
+        component: <Settings />
+    },
+    {
+        path: "/records",
+        component: <Records />
     }
 ];
 

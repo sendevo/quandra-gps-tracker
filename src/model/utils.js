@@ -8,6 +8,7 @@ export const elapsedMSToHHMM = elapsed => {
     const duration = moment.duration(elapsed);
     const hours = num2ZeroPaddedStr(duration.hours(),2);
     const minutes = num2ZeroPaddedStr(duration.minutes(),2);
+    //const seconds = num2ZeroPaddedStr(duration.seconds(),2);
     return `${hours}:${minutes}`;
 };
 

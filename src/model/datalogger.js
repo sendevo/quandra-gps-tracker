@@ -3,9 +3,10 @@ import {
     isLocationAvailable,
     getUserLocation
 } from "./utils";
+import { SAMPLE_PERIOD } from "./constants";
 
 export default class Datalogger {
-    constructor(callback, interval = 5000) {
+    constructor(callback, interval = SAMPLE_PERIOD) {
         // Private
         this._intervalId = null;
         this._hasLocationAccess = false;
@@ -19,23 +20,35 @@ export default class Datalogger {
         isLocationAvailable()
             .then(() => {
                 this._hasLocationAccess = true;
+                console.log("Location accesible");
             })
             .catch(console.error);
+        console.log("Datalogger ready.");
     }
 
-    startLogging() {
+    start() {
         if (this._intervalId || !this._hasLocationAccess ) 
             return false;
+        this.route = [];
+        this.elapsed = 0;
+        this.distance = 0;
         this._intervalId = setInterval(() => this._pushLocation(), this.interval);
+        this._pushLocation();
+        console.log("Datalogger started.");
         return true;
     }
 
-    stopLogging() {
+    stop() {
         if (this._intervalId) {
             clearInterval(this._intervalId);
             this._intervalId = null;
+            console.log("Datalogger stopped.");
         }
         return Boolean(this._intervalId);
+    }
+
+    getTravel() {
+        return this.route;
     }
 
     _pushLocation() {
@@ -52,8 +65,8 @@ export default class Datalogger {
                         this.elapsed += dt;
                     }
                     this.route.push({lat, lng, time});
-                    const {route, distance, elapsed} = this;
-                    this.callback({lat, lng, time, route, distance, elapsed});
+                    const {distance, elapsed} = this;
+                    this.callback({lat, lng, time, distance, elapsed});
                 })
                 .catch(console.err);
     }
