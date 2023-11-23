@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import MainView from "../../components/MainView";
@@ -8,6 +8,7 @@ import {
     stopRecording, 
     positionUpdate 
 } from "../../model/actions";
+import { elapsedMSToHHMM } from "../../model/utils";
 import RecordButton from "../../components/RecordButton";
 import { FaInfoCircle, FaCogs, FaRoute } from "react-icons/fa";
 
@@ -48,12 +49,14 @@ const View = () => {
         }
     };
 
+    const elapsedTime = elapsedMSToHHMM(state.recordingDuration);
+
     return (
         <MainView>
             <RecordButton state={state.recordingState} onClick={handleButtonClick}/>
             <Box sx={styles.infoBox}>
-                <Typography>Tiempo de recorrido: {}</Typography>
-                <Typography>Distancia de recorrida: {}</Typography>
+                <Typography>Tiempo de recorrido: {elapsedTime}</Typography>
+                <Typography>Distancia de recorrida: {state.recordingDistance.toFixed(2)} km</Typography>
             </Box>
             <Box sx={styles.aboutButton}>
                 <Link to={'/about'}>
@@ -66,7 +69,7 @@ const View = () => {
                 </Link>
             </Box>
             <Box sx={styles.recordsButton}>
-                <Link to={'/config'}>
+                <Link to={'/routes'}>
                     <FaRoute size="40px" color="rgb(100,100,100)"/>
                 </Link>
             </Box>
