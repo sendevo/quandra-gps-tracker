@@ -1,7 +1,5 @@
 # Backlog 
 
-
-
 ### v1.0.0:  
   - [x] Creación del repositorio GitHub.  
   - [x] Icono y logo de la app.  

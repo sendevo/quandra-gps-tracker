@@ -73,7 +73,7 @@ export const postDataToURL = (apiURL, data) => {
     const request = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+        body: data
     };
     return fetch(apiURL, request);
 };

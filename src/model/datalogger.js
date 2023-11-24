@@ -1,10 +1,20 @@
 import { KeepAwake } from "@capacitor-community/keep-awake";
+import moment from "moment";
 import {
     haversine,
     isLocationAvailable,
     getUserLocation
 } from "./utils";
 import { SAMPLE_PERIOD, INACTIVITY_TOLERANCE } from "./constants";
+
+export const route2CSV = route => route.map(
+        point => [
+            moment(point.time).format(), // YYYY-MM-DD[T]HH:mm:ss
+            point.lat, 
+            point.lng
+        ].join(",")
+    )
+    .join("\n");
 
 export default class Datalogger {
     constructor(

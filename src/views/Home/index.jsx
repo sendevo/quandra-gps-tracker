@@ -4,7 +4,7 @@ import MainView from "../../components/MainView";
 import {
     useState,
     useDatalogger
-} from "../../model/hooks";
+} from "../../hooks";
 import { elapsedMSToHHMM } from "../../model/utils";
 import RecordButton from "../../components/RecordButton";
 import { FaInfoCircle, FaCogs, FaRoute } from "react-icons/fa";

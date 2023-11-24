@@ -17,8 +17,9 @@ import {
 import moment from "moment";
 import MainView from "../../components/MainView";
 import { elapsedMSToHHMM, postDataToURL } from "../../model/utils";
+import { route2CSV } from "../../model/datalogger";
 import { API_URL } from "../../model/constants";
-import { useDatabase } from "../../model/hooks";
+import { useDatabase } from "../../hooks";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 const styles = {
@@ -102,7 +103,8 @@ const View = () => {
             const travelId = selected[0];
             database.getTravel(travelId)
                 .then(travelData => {
-                    postDataToURL(API_URL, travelData)
+                    const csvData = route2CSV(travelData.route);
+                    postDataToURL(API_URL, csvData)
                         .then(res => {
                             if(res.ok){
                                 travelData.syncId = res.travelId;
