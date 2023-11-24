@@ -1,0 +1,8 @@
+{
+    "travels": {
+        "options": {
+            "keyPath": "id",
+            "autoIncrement": true
+        }
+    }
+}

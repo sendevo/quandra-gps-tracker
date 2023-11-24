@@ -20,7 +20,9 @@ export const reducer = (prevState, action) => {
         case "STOP_RECORDING": {
             return {
                 ...prevState,
-                recordingState: "IDLE"
+                recordingState: "IDLE",
+                recordingDuration: 0,
+                recordingDistance: 0
             }
         }
         case "POSITION_UPDATE": {

@@ -6,10 +6,17 @@ const num2ZeroPaddedStr = (num, pad) => num.toString().padStart(pad, "0");
 
 export const elapsedMSToHHMM = elapsed => {
     const duration = moment.duration(elapsed);
-    const hours = num2ZeroPaddedStr(duration.hours(),2);
-    const minutes = num2ZeroPaddedStr(duration.minutes(),2);
-    //const seconds = num2ZeroPaddedStr(duration.seconds(),2);
-    return `${hours}:${minutes}`;
+    const hours = num2ZeroPaddedStr(duration.hours(), 2);
+    const minutes = num2ZeroPaddedStr(duration.minutes(), 2);
+    const seconds = num2ZeroPaddedStr(duration.seconds(), 2);
+
+    const formattedTime = [
+        duration.hours() > 0 ? `${hours} hs` : "",
+        duration.minutes() > 0 || duration.hours() > 0 ? `${minutes} min` : "",
+        `${seconds} seg`
+    ].filter(Boolean).join(' ');
+
+    return formattedTime || "-";
 };
 
 export const haversine = (pos1, pos2) => { // pos:{lat, lng}
@@ -60,4 +67,13 @@ export const getUserLocation = () => {
                 {maximumAge: 600000, timeout: 10000}
             );
     });
+};
+
+export const postDataToURL = (apiURL, data) => {
+    const request = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+    return fetch(apiURL, request);
 };

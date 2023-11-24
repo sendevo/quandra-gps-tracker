@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
 import {
     Accordion,
     AccordionSummary,
     AccordionDetails, 
     Box,
-    Typography
+    Typography,
+    Link
 } from "@mui/material";
 import MainView from "../../components/MainView";
 import { 
@@ -12,13 +12,13 @@ import {
     APP_NAME, 
     VERSION_CODE, 
     VERSION_VALUE,
-    STATIC_ELAPSED_TOLERANCE 
+    INACTIVITY_TOLERANCE 
 } from "../../model/constants";
 import { FaChevronDown } from "react-icons/fa";
 
 
 const styles = {
-    accordion: {backgroundColor: "rgba(255, 255, 255, 0.7)"},
+    accordion: {backgroundColor: "rgba(255, 255, 255, 0.1)"},
     summary: {fontWeight: "bold"},
     subtitle: {
         mt: 1,
@@ -38,7 +38,7 @@ const View = () => (
                     <Typography><b>{APP_NAME}</b> es una aplicación móvil que permite registrar rutas a partir de la ubicación del dispositivo. Los recorridos se guardan localmente y se envian de forma anónima al servicio de <b>{PROJECT_NAME}</b> para su procesamiento. Como resultado, <b>{PROJECT_NAME}</b> puede analizar y estimar la calidad de la ruta e identificar posibles puntos de mejora.</Typography>
                     <Typography><b>{APP_NAME}</b> es una aplicación gratuita, libre de publicidades y no solicitará a sus usuarios realizar pagos bajo ningún concepto, tampoco autenticarse ni brindar datos personales de ningún tipo.</Typography>
                     <Typography>El inicio y finalización del registro de datos de ubicación se controla manualmente desde la pantalla principal y la sincronización de las rutas no se ejecutará a menos que el usuario lo autorice.</Typography>
-                    <Typography>La finalización del registro se realizará automáticamente en caso de que la posición del dispositivo se mantenga constante dentro de cierto radio de tolerancia durante más de {STATIC_ELAPSED_TOLERANCE/6e4} minutos.</Typography>
+                    <Typography>La finalización del registro se realizará automáticamente en caso de que la posición del dispositivo se mantenga constante dentro de cierto radio de tolerancia durante más de {INACTIVITY_TOLERANCE/6e4} minutos.</Typography>
                 </AccordionDetails>
             </Accordion>
 
@@ -61,7 +61,7 @@ const View = () => (
                     <Typography>El usuario de <b>{APP_NAME}</b> se compromete a:</Typography>
                     <ol>
                         <li>Emplear esta aplicación, en cualquiera de sus versiones, únicamente para registrar datos georeferenciados de movimiento del dispositivo.</li>
-                        <li>Respetar los términos de licencia de la <a href="https://www.gnu.org/licenses/gpl-3.0.html" rel="noopener" target="_blank">GNU General Public License (v3)</a>, en lo que respecta a la edición, modificación y distribución del código fuente de <b>{APP_NAME}</b>.</li>
+                        <li>Respetar los términos de licencia de la <Link href="https://www.gnu.org/licenses/gpl-3.0.html" rel="noopener" target="_blank">GNU General Public License (v3)</Link>, en lo que respecta a la edición, modificación y distribución del código fuente de <b>{APP_NAME}</b>.</li>
                         <li>No promocionar o publicitar productos o servicios que no sean propios sin una correspondiente autorización.</li>
                         <li>No infringir la ley de cualquier forma, incluyendo actividades como almacenar o compartir información falsa, fraudulenta o engañosa.</li>
                     </ol>
@@ -89,7 +89,7 @@ const View = () => (
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography variant="h5" sx={{mb:2, textAlign:"center"}}>{APP_NAME}</Typography>
-                    <Typography><b>Desarrollo:</b> <a href="https://sendevosoftware.com.ar" rel="noopener" target="_blank">Sendevo Software</a></Typography>
+                    <Typography><b>Desarrollo:</b> <Link href="https://sendevosoftware.com.ar" rel="noopener" target="_blank">Sendevo Software</Link></Typography>
                     <Typography><b>Nombre de versión:</b> {VERSION_VALUE}</Typography>
                     <Typography><b>Código de versión:</b> {VERSION_CODE}</Typography>
                 </AccordionDetails>
@@ -100,7 +100,7 @@ const View = () => (
                     <Typography sx={styles.summary}>Datos de contacto</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography><b>{APP_NAME}</b> es un producto de <i><a href="https://sendevosoftware.com.ar" rel="noopener" target="_blank">Sendevo Software</a></i>. Ante cualquier duda, consulta o sugerencia, no dude en contactarnos a <a href="mailto:holasendevo@gmail.com?Subject=Ref.%20Presipedia">holasendevo@gmail.com</a></Typography>
+                    <Typography><b>{APP_NAME}</b> es un producto de <i><Link href="https://sendevosoftware.com.ar" rel="noopener" target="_blank">Sendevo Software</Link></i>. Ante cualquier duda, consulta o sugerencia, no dude en contactarnos a <Link href="mailto:holasendevo@gmail.com?Subject=Ref.%20Presipedia">holasendevo@gmail.com</Link></Typography>
                 </AccordionDetails>
             </Accordion>
         </Box>

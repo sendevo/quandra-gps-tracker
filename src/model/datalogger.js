@@ -1,21 +1,31 @@
+import { KeepAwake } from "@capacitor-community/keep-awake";
 import {
     haversine,
     isLocationAvailable,
     getUserLocation
 } from "./utils";
-import { SAMPLE_PERIOD } from "./constants";
+import { SAMPLE_PERIOD, INACTIVITY_TOLERANCE } from "./constants";
 
 export default class Datalogger {
-    constructor(callback, interval = SAMPLE_PERIOD) {
+    constructor(
+            startCallback = () => console.log("Start"),
+            updateCallback = () => console.log("Update"), 
+            stopCallback = () => console.log("Stop"), 
+            sampleInterval = SAMPLE_PERIOD, 
+            inactivityToleranceMs = INACTIVITY_TOLERANCE) {
         // Private
         this._intervalId = null;
         this._hasLocationAccess = false;
+        this._inactivityTime = 0;
         // Public
-        this.interval = interval;
         this.route = [];
         this.distance = 0;
         this.elapsed = 0;
-        this.callback = callback;
+        this.startCallback = startCallback;
+        this.updateCallback = updateCallback;
+        this.stopCallback = stopCallback;
+        this.sampleInterval = sampleInterval;
+        this.inactivityToleranceMs = inactivityToleranceMs;
         // Check location permissions
         isLocationAvailable()
             .then(() => {
@@ -32,7 +42,9 @@ export default class Datalogger {
         this.route = [];
         this.elapsed = 0;
         this.distance = 0;
-        this._intervalId = setInterval(() => this._pushLocation(), this.interval);
+        this._intervalId = setInterval(() => this._pushLocation(), this.sampleInterval);
+        KeepAwake.keepAwake();
+        this.startCallback();
         this._pushLocation();
         console.log("Datalogger started.");
         return true;
@@ -44,11 +56,16 @@ export default class Datalogger {
             this._intervalId = null;
             console.log("Datalogger stopped.");
         }
+        KeepAwake.allowSleep();
+        this.stopCallback();
         return Boolean(this._intervalId);
     }
 
     getTravel() {
-        return this.route;
+        const syncId = ""; // When sinchronized with backend, set uuidv4 value
+        const created = Date.now();
+        const {route, distance, elapsed} = this;
+        return {syncId, created, route, distance, elapsed};
     }
 
     _pushLocation() {
@@ -63,10 +80,19 @@ export default class Datalogger {
                         const dt = time - lastLocation.time;
                         this.distance += dist;
                         this.elapsed += dt;
+                        // Check inactivity
+                        if(dist === 0) {
+                            this._inactivityTime += dt;
+                            if(this._inactivityTime > this.inactivityToleranceMs)
+                                this.stop();
+                        }else{
+                            this._inactivityTime = 0;
+                        }
                     }
                     this.route.push({lat, lng, time});
                     const {distance, elapsed} = this;
-                    this.callback({lat, lng, time, distance, elapsed});
+                    const params = {lat, lng, time, distance, elapsed};
+                    this.updateCallback(params);
                 })
                 .catch(console.err);
     }

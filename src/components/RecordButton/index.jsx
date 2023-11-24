@@ -8,7 +8,7 @@ import {
 
 const styles = {
     root: {
-        marginTop: "15vh",
+        marginTop: "50px",
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -19,8 +19,8 @@ const styles = {
     },
     button: {
         borderRadius: '50%',
-        width: '300px',
-        height: '300px',
+        width: '70vw',
+        height: '70vw',
         fontSize: '1.5rem'
     },
     buttonText: {
@@ -55,7 +55,7 @@ const RecordButton = ({onClick, state="IDLE"}) => {
                 </Button>
                 {state==="RECORDING" && (
                     <CircularProgress
-                        size={300}
+                        size={"70vw"}
                         thickness={2}
                         disableShrink
                         onClick={onClick}
