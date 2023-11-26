@@ -11,8 +11,7 @@ import {
     PROJECT_NAME,
     APP_NAME, 
     VERSION_CODE, 
-    VERSION_VALUE,
-    INACTIVITY_TOLERANCE 
+    VERSION_VALUE
 } from "../../model/constants";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -38,7 +37,7 @@ const View = () => (
                     <Typography><b>{APP_NAME}</b> es una aplicación móvil que permite registrar rutas a partir de la ubicación del dispositivo. Los recorridos se guardan localmente y se envian de forma anónima al servicio de <b>{PROJECT_NAME}</b> para su procesamiento. Como resultado, <b>{PROJECT_NAME}</b> puede analizar y estimar la calidad de la ruta e identificar posibles puntos de mejora.</Typography>
                     <Typography><b>{APP_NAME}</b> es una aplicación gratuita, libre de publicidades y no solicitará a sus usuarios realizar pagos bajo ningún concepto, tampoco autenticarse ni brindar datos personales de ningún tipo.</Typography>
                     <Typography>El inicio y finalización del registro de datos de ubicación se controla manualmente desde la pantalla principal y la sincronización de las rutas no se ejecutará a menos que el usuario lo autorice.</Typography>
-                    <Typography>La finalización del registro se realizará automáticamente en caso de que la posición del dispositivo se mantenga constante dentro de cierto radio de tolerancia durante más de {INACTIVITY_TOLERANCE/6e4} minutos.</Typography>
+                    <Typography>La finalización del registro se realizará automáticamente en caso de que la posición del dispositivo se mantenga constante durante unos minutos.</Typography>
                 </AccordionDetails>
             </Accordion>
 

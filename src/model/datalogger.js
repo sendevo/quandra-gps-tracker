@@ -5,7 +5,17 @@ import {
     isLocationAvailable,
     getUserLocation
 } from "./utils";
-import { SAMPLE_PERIOD, INACTIVITY_TOLERANCE } from "./constants";
+import { 
+    SAMPLE_PERIOD, 
+    INACTIVE_TOL_TIME,
+    INACTIVE_TOL_DIST,
+    MAX_INACTIVE_TOL_DIST, 
+    MAX_INACTIVE_TOL_TIME, 
+    MAX_SAMPLE_PERIOD, 
+    MIN_INACTIVE_TOL_DIST, 
+    MIN_INACTIVE_TOL_TIME, 
+    MIN_SAMPLE_PERIOD  
+} from "./constants";
 
 export const route2CSV = route => route.map(
         point => [
@@ -16,13 +26,18 @@ export const route2CSV = route => route.map(
     )
     .join("\n");
 
+export const defaultConfig = {
+    sampleInterval: SAMPLE_PERIOD,
+    inactivityToleranceKm: INACTIVE_TOL_DIST,
+    inactivityToleranceMs: INACTIVE_TOL_TIME
+};
+
 export default class Datalogger {
     constructor(
             startCallback = () => console.log("Start"),
             updateCallback = () => console.log("Update"), 
             stopCallback = () => console.log("Stop"), 
-            sampleInterval = SAMPLE_PERIOD, 
-            inactivityToleranceMs = INACTIVITY_TOLERANCE) {
+            config = defaultConfig) {
         // Private
         this._intervalId = null;
         this._hasLocationAccess = false;
@@ -34,8 +49,9 @@ export default class Datalogger {
         this.startCallback = startCallback;
         this.updateCallback = updateCallback;
         this.stopCallback = stopCallback;
-        this.sampleInterval = sampleInterval;
-        this.inactivityToleranceMs = inactivityToleranceMs;
+        this.sampleInterval = config.sampleInterval;
+        this.inactivityToleranceMs = config.inactivityToleranceMs;
+        this.inactivityToleranceKm = config.inactivityToleranceKm;
         // Check location permissions
         isLocationAvailable()
             .then(() => {
@@ -44,6 +60,32 @@ export default class Datalogger {
             })
             .catch(console.error);
         console.log("Datalogger ready.");
+    }
+
+    setConfig(newConfig) {
+        if(
+            "sampleInterval" in newConfig && 
+            "inactivityToleranceMs" in newConfig && 
+            "inactivityToleranceKm" in newConfig
+        ){
+            const {
+                sampleInterval, 
+                inactivityToleranceMs, 
+                inactivityToleranceKm
+            } = newConfig;
+            const config = {};
+            if(sampleInterval < MAX_SAMPLE_PERIOD && sampleInterval > MIN_SAMPLE_PERIOD)
+                config.sampleInterval = sampleInterval;
+            if(inactivityToleranceKm < MAX_INACTIVE_TOL_DIST && inactivityToleranceKm > MIN_INACTIVE_TOL_DIST)
+                config.inactivityToleranceKm = inactivityToleranceKm;
+            if(inactivityToleranceMs < MAX_INACTIVE_TOL_TIME && inactivityToleranceMs > MIN_INACTIVE_TOL_TIME)
+                config.inactivityToleranceMs = inactivityToleranceMs;        
+            this.config = newConfig;
+            console.log("New config");
+            console.log(this.config);
+        }else{
+            console.error("Missing attributes in new config");
+        }
     }
 
     start() {
@@ -91,7 +133,7 @@ export default class Datalogger {
                         this.distance += dist;
                         this.elapsed += dt;
                         // Check inactivity
-                        if(dist === 0) {
+                        if(dist < this.inactivityToleranceKm) {
                             this._inactivityTime += dt;
                             if(this._inactivityTime > this.inactivityToleranceMs)
                                 this.stop();

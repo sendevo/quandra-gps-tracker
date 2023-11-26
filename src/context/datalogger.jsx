@@ -1,4 +1,5 @@
-import { createContext, useContext } from 'react';
+import { Preferences } from '@capacitor/preferences';
+import { createContext, useContext, useEffect } from 'react';
 import { DispatchContext } from './state';
 import { DatabaseContext } from './database';
 import { 
@@ -6,8 +7,11 @@ import {
     positionUpdate, 
     stopRecording 
 } from '../model/actions';
-import { SAMPLE_PERIOD } from '../model/constants';
-import Datalogger from '../model/datalogger';
+import { 
+    DATALOGGER_CONFIG_KEY,
+    SAMPLE_PERIOD 
+} from '../model/constants';
+import Datalogger, { defaultConfig } from '../model/datalogger';
 
 export const DataloggerContext = createContext();
 
@@ -26,7 +30,7 @@ const DataloggerProvider = ({ children }) => {
         () => {
             stopRecording(dispatch);
             const travel = datalogger.getTravel();
-            if(travel.elapsed > SAMPLE_PERIOD) 
+            if(travel.elapsed > 2*SAMPLE_PERIOD) 
                 database.addTravel(travel)
                     .then(() => {
                         console.log("Travel saved successfully");
@@ -36,6 +40,28 @@ const DataloggerProvider = ({ children }) => {
                 console.log("Travel too short! Data was not saved.");
         }
     );
+
+    useEffect( () => {
+        Preferences.get({key: DATALOGGER_CONFIG_KEY})
+            .then(prefs => {
+                const {value} = prefs;
+                if(value){
+                    const config = JSON.parse(value);
+                    if(config)
+                        datalogger.setConfig(config);
+                }else{
+                    Preferences.set({
+                        key: DATALOGGER_CONFIG_KEY,
+                        value: JSON.stringify(defaultConfig)
+                    })
+                        .then(() => {
+                            console.log("Default config saved to preferences.");
+                        })
+                        .catch(console.error);
+                }
+            })
+            .catch(console.error);
+    }, []);
 
     return (
         <DataloggerContext.Provider value={datalogger}>

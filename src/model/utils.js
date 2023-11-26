@@ -69,11 +69,11 @@ export const getUserLocation = () => {
     });
 };
 
-export const postDataToURL = (apiURL, data) => {
+export const postDataToURL = (apiURL, dataString) => {
     const request = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: data
+        body: dataString
     };
     return fetch(apiURL, request);
 };
