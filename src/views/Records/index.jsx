@@ -22,6 +22,7 @@ import { route2CSV } from "../../model/datalogger";
 import { DEFAULT_API_URL, API_URL_KEY } from "../../model/constants";
 import { useDatabase } from "../../hooks";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import icon from "../../assets/not-found-icon.png";
 
 const styles = {
     paper: {backgroundColor: 'rgba(255, 255, 255, 0.1)'},
@@ -224,7 +225,8 @@ const View = () => {
                     flexDirection={"column"} 
                     alignItems={"center"}
                     sx={{mt: "50%"}}>
-                    <Typography variant="h5" fontWeight={"bold"}>Aún no hay viajes guardados</Typography>
+                    <img src={icon} height="100px" alt="Sin datos" />
+                    <Typography variant="h5" fontWeight={"bold"}>Aún no has guardado viajes</Typography>
                 </Box>
             }
         </MainView>

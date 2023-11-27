@@ -94,49 +94,51 @@ export const routeToGeoJSON = route => {
 };
 */
 
-export const drawRouteOnCanvas = (route, canvas) => {
+const drawLine = (ctx, x1, y1, x2, y2) => {
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1)
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+};
 
+const drawPoint = (ctx, x, y, text="") => {
+    ctx.fillStyle = "blue";
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.fillStyle = "white";
+    ctx.fillText(text, x, y);
+};
+
+export const drawRouteOnCanvas = (route, canvas) => {
     const lats = route.map(point => point.lat);
     const lngs = route.map(point => point.lng);
     const maxLat = Math.max(...lats);
     const minLat = Math.min(...lats);
     const maxLng = Math.max(...lngs);
     const minLng = Math.min(...lngs);
-    const width = maxLat - minLat;
-    const height = maxLng - minLng;
-
-    const xScale = 100; // lat -> px
-    const yScale = 100; // lng -> px
-
-    // Set the canvas dimensions
-    canvas.width = Math.floor(width * xScale);
-    canvas.height = Math.floor(height * yScale);
-
+    const width = maxLat === minLat ? 1 : maxLat - minLat;
+    const height = maxLng === minLng ? 1 : maxLng - minLng;
+    const padding = 20;
+    const xScale = 500/width;
+    const yScale = 500/height;
     const ctx = canvas.getContext('2d');
-    ctx.beginPath();
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'red';
-
-    console.clear();
-
-    route.forEach((point, index) => {
-        const x = (point.lat - minLat)*xScale;
-        const y = (point.lng - minLng)*yScale;
-    
-        console.log("  ");
-        console.log("-------------");
-        console.log("lat", point.lat, "lng", point.lng);
-        console.log("minLat", minLat, "maxLat", maxLat);
-        console.log("minLng", minLng, "maxLng", maxLng);
-        console.log("canvas.width", canvas.width, "canvas.height", canvas.height);
-        console.log("x", x, "y", y);
-        if (index === 0)
-            ctx.moveTo(x, y);
-        else
-            ctx.lineTo(x, y);
-    });
-
-    ctx.stroke();
+    canvas.width = 500 + 2*padding;
+    canvas.height = 500 + 2*padding;
+    for(let i = 1; i < route.length; i++) {
+        const point1 = route[i-1]; 
+        const point2 = route[i];
+        const x1 = (point1.lng - minLng)*yScale + padding;
+        const y1 = (point1.lat - minLat)*xScale + padding;
+        const x2 = (point2.lng - minLng)*yScale + padding;
+        const y2 = (point2.lat - minLat)*xScale + padding;
+        drawLine(ctx, x1, y1, x2, y2);
+        drawPoint(ctx, x1, y1, i === 1 ? `(${point1.lat.toFixed(2)}, ${point1.lng.toFixed(2)})` : "");
+        if(i === route.length-1)
+            drawPoint(ctx, x2, y2, `(${point2.lat.toFixed(2)}, ${point2.lng.toFixed(2)})`);
+    };    
 };
 
 

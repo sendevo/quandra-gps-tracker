@@ -8,7 +8,6 @@ const views = [
         path: "/about",
         component: <About />
     },
-    ,
     {
         path: "/records",
         component: <Records />
@@ -21,7 +20,6 @@ const views = [
         path: "/travel",
         component: <Travel />
     }
-
 ];
 
 export default views;

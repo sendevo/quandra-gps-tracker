@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { 
+    Box,
     Grid,
     Paper, 
     Typography,
@@ -14,6 +15,7 @@ import {
     location2GoggleMap,
     drawRouteOnCanvas
 } from "../../model/utils";
+import icon from "../../assets/not-found-icon.png";
 import { FaExternalLinkSquareAlt } from "react-icons/fa";
 
 
@@ -34,7 +36,8 @@ const View = () => {
         idFound: false,
         created: 0,
         distance: 0,
-        elapsed: 0
+        elapsed: 0,
+        route: []
     });
     const canvasRef = useRef(null);
     const [searchParams] = useSearchParams(); 
@@ -58,16 +61,11 @@ const View = () => {
     useEffect(() => {
         console.log(canvasRef);
         if(canvasRef.current){
-            //const route = travel.route;
-            const route = [
-                { lat: 37.7749, lng: -122.4194 },
-                { lat: 34.0522, lng: -118.2437 },
-                { lat: 40.7128, lng: -74.0060 },
-                { lat: 37.7749, lng: -122.4194 }
-            ];
+            console.log(travel);
+            const route = travel.route;
             drawRouteOnCanvas(route, canvasRef.current);
         }else{
-            console.error("error on canvas");
+            console.error("Canvas not mounted");
         }
     }, [canvasRef, travel]);
 
@@ -79,7 +77,7 @@ const View = () => {
                     <Typography><b>Duración del viaje:</b> {elapsedMSToHHMM(travel.elapsed)}</Typography>
                     <Typography><b>Distancia recorrida:</b> {travel.distance} km</Typography>
                     <Typography><b>Cantidad de puntos registrados:</b> {travel.route.length}</Typography>
-                    <Typography><b>Ubicaciones:</b></Typography>
+                    <Typography><b>Ubicación:</b></Typography>
 
                     <Grid container justifyContent={"space-around"}>
                         <Grid item>
@@ -99,18 +97,27 @@ const View = () => {
                             </Link>
                         </Grid>
                     </Grid>
-                    <Typography sx={{mt:1}}><b>Diagrama de ruta</b></Typography>
+                </Paper>
+                :
+                <Box 
+                    display={"flex"} 
+                    flexDirection={"column"} 
+                    alignItems={"center"}
+                    sx={{mt: "50%"}}>
+                    <img src={icon} height="100px" alt="Sin datos" />
+                    <Typography variant="h5" fontWeight={"bold"}>Ruta no encontrada</Typography>
+                </Box>
+            }
+            {travel.idFound && 
+                <Paper sx={{...styles.paper, mt:1}}>
+                    <Typography><b>Diagrama de ruta</b></Typography>
                     <canvas 
                         height={500}
                         width={500}
                         ref={canvasRef}
                         style={styles.canvas} />
                 </Paper>
-                :
-                <Paper>
-                    <Typography><b>Datos de viaje no encontrados</b></Typography>
-                </Paper> 
-            }
+}
         </MainView>
     );
 };
