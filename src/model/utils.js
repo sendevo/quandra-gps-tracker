@@ -69,6 +69,10 @@ export const getUserLocation = () => {
     });
 };
 
+export const isValidURL = url => {
+    return url.length > 20; // TODO
+};
+
 export const postDataToURL = (apiURL, dataString) => {
     const request = {
         method: 'POST',

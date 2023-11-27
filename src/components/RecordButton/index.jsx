@@ -21,6 +21,8 @@ const styles = {
         borderRadius: '50%',
         width: '70vw',
         height: '70vw',
+        maxWidth: "300px",
+        maxHeight: "300px",
         fontSize: '1.5rem'
     },
     buttonText: {

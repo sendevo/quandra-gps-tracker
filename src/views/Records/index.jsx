@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Preferences } from "@capacitor/preferences";
 import { 
     Grid, 
     Button, 
@@ -18,7 +19,7 @@ import moment from "moment";
 import MainView from "../../components/MainView";
 import { elapsedMSToHHMM, postDataToURL } from "../../model/utils";
 import { route2CSV } from "../../model/datalogger";
-import { API_URL } from "../../model/constants";
+import { DEFAULT_API_URL, API_URL_KEY } from "../../model/constants";
 import { useDatabase } from "../../hooks";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
@@ -104,22 +105,33 @@ const View = () => {
             database.getTravel(travelId)
                 .then(travelData => {
                     const csvData = route2CSV(travelData.route);
-                    postDataToURL(API_URL, csvData)
-                        .then(res => {
-                            if(res.ok){
-                                travelData.syncId = res.travelId;
-                                database.addTravel(travelData)
-                                    .then(() => {
+                    Preferences.get({key: API_URL_KEY})
+                        .then(data => {
+                            if(!data?.value){
+                                Preferences.set({key: API_URL_KEY, value:DEFAULT_API_URL})
+                                    .then(() => console.log("API URL saved to preferences."))
+                                    .catch(console.error);
+                            }
+                            const apiUrl = data?.value || DEFAULT_API_URL;
+                            console.log("Posting to", apiUrl);
+                            postDataToURL(apiUrl, csvData)
+                                .then(res => {
+                                    if(res.ok){
+                                        travelData.syncId = res.travelId;
+                                        database.addTravel(travelData)
+                                            .then(() => {
+                                                // TODO: Hide preloader
+                                                // TODO: Show feedback
+                                                console.log("Synchronization done.");
+                                            })
+                                            .catch(console.error);
+                                    }else{
                                         // TODO: Hide preloader
                                         // TODO: Show feedback
-                                        console.log("Synchronization done.");
-                                    })
-                                    .catch(console.error);
-                            }else{
-                                // TODO: Hide preloader
-                                // TODO: Show feedback
-                                console.error("Synchronization error.");
-                            }
+                                        console.error("Synchronization error.");
+                                    }
+                                })
+                                .catch(console.error); // TODO: Hide preloader
                         })
                         .catch(console.error); // TODO: Hide preloader
                 })

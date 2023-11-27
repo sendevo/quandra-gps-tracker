@@ -31,7 +31,7 @@ const styles = {
     aboutButton: {
         position: "absolute",
         bottom: "25px",
-        right: "25px"
+        right: "10%"
     },
     configButton: {
         position: "absolute",
@@ -42,7 +42,7 @@ const styles = {
     recordsButton: {
         position: "absolute",
         bottom: "25px",
-        left: "25px"
+        left: "10%"
     },
     infoBox: {
         marginTop: "20px",

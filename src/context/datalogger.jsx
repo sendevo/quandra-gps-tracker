@@ -44,6 +44,8 @@ const DataloggerProvider = ({ children }) => {
     useEffect( () => {
         Preferences.get({key: DATALOGGER_CONFIG_KEY})
             .then(prefs => {
+                console.log("Got preferences");
+                console.log(prefs);
                 const {value} = prefs;
                 if(value){
                     const config = JSON.parse(value);
