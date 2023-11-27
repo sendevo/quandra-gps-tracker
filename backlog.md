@@ -11,9 +11,9 @@
   - [x] Detener automáticamente luego de unos minutos sin desplazamientos.  
   - [x] Listar rutas guardadas.  
   - [ ] Abrir rutas guardadas.  
-  - [ ] Configuración de la app:  
+  - [x] Configuración de la app:  
     - [x] Guardar configuracion en Preferences
-    - [ ] Agregar GUI de configuracion.  
+    - [x] Agregar GUI de configuracion.  
   - [x] Sincronizar registros con API de Quandra.  
   - [ ] Feedbacks
     - [ ] Toasts de cambio de estado de grabación.  

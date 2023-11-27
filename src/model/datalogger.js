@@ -73,25 +73,19 @@ export default class Datalogger {
                 inactivityToleranceMs, 
                 inactivityToleranceKm
             } = newConfig;
-            const config = {};
-            if(sampleInterval <= MAX_SAMPLE_PERIOD && sampleInterval >= MIN_SAMPLE_PERIOD)
-                config.sampleInterval = sampleInterval;
-            else 
+            if(sampleInterval <= MAX_SAMPLE_PERIOD && sampleInterval >= MIN_SAMPLE_PERIOD &&
+                inactivityToleranceKm <= MAX_INACTIVE_TOL_DIST && inactivityToleranceKm >= MIN_INACTIVE_TOL_DIST &&
+                inactivityToleranceMs <= MAX_INACTIVE_TOL_TIME && inactivityToleranceMs >= MIN_INACTIVE_TOL_TIME){
+                    this.sampleInterval = sampleInterval;
+                    this.inactivityToleranceMs = inactivityToleranceMs;
+                    this.inactivityToleranceKm = inactivityToleranceKm;
+                return true;
+            }else{
+                console.error("Wrong parameters values.");
                 return false;
-            if(inactivityToleranceKm <= MAX_INACTIVE_TOL_DIST && inactivityToleranceKm >= MIN_INACTIVE_TOL_DIST)
-                config.inactivityToleranceKm = inactivityToleranceKm;
-            else 
-                return false;
-            if(inactivityToleranceMs <= MAX_INACTIVE_TOL_TIME && inactivityToleranceMs >= MIN_INACTIVE_TOL_TIME)
-                config.inactivityToleranceMs = inactivityToleranceMs;        
-            else 
-                return false;
-            this.config = newConfig;
-            console.log("New config");
-            console.log(this.config);
-            return true;
+            }
         }else{
-            console.error("Missing attributes in new config");
+            console.error("Missing attributes in new config.");
             return false;
         }
     }

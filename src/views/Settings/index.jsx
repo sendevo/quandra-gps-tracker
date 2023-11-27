@@ -47,7 +47,7 @@ const View = () => {
                 if(value){
                     setAPIUrl(value);
                 }else{
-                    Preferences.set({
+                    Preferences.set({ 
                         key: API_URL_KEY,
                         value: DEFAULT_API_URL
                     })
@@ -56,6 +56,7 @@ const View = () => {
                         })
                         .catch(console.error);
                 }
+                setConfig(datalogger.getConfig());
             })
             .catch(console.error);
     }, []);
@@ -72,7 +73,7 @@ const View = () => {
         setAPIUrl(e.target.value);
     };
 
-    const handleConfigChange = (name, value) => {
+    const handleConfigChange = (name, value) => { 
         setConfig(prevConfig => {
             const newConfig = {
                 ...prevConfig,
@@ -85,12 +86,11 @@ const View = () => {
                     value: JSON.stringify(newConfig)
                 })
                     .then(()=>{
-                        console.log("Datalogger config saved in Preferences")
-                        console.log(newConfig);
+                        console.log("Datalogger config saved in Preferences.")
                     })
                     .catch(console.error);
             }else{
-                console.error("Error in config parameters");
+                console.error("Error in config parameters.");
             }
             return result ? newConfig : prevConfig;
         });
