@@ -1,7 +1,6 @@
 import moment from "moment";
 import { Capacitor } from "@capacitor/core";
 import { Geolocation } from "@capacitor/geolocation";
-import bbox from "@turf/bbox";
 
 const num2ZeroPaddedStr = (num, pad) => num.toString().padStart(pad, "0");
 
@@ -27,10 +26,15 @@ export const isLocationAvailable = () => {
         Geolocation.checkPermissions()
             .then(permissions => {
                 if(permissions.location === "granted")
-                    resolve(true);
+                    resolve();
                 else
                     Geolocation.requestPermissions()
-                        .then(res => resolve(res.location === "granted"))
+                        .then(res => {
+                            if(res.location === "granted")
+                                resolve();
+                            else 
+                                reject();
+                        })
                         .catch(reject);
             })
             .catch(reject);
@@ -39,8 +43,11 @@ export const isLocationAvailable = () => {
 
 export const getUserLocation = () => {
     const resolver = (pos, callback) => {
+        const timestamp = pos.timestamp;
         const {latitude, longitude} = pos.coords;
+        console.log(latitude, longitude);
         callback({
+            timestamp,
             lat: latitude,
             lng: longitude
         });
@@ -48,7 +55,11 @@ export const getUserLocation = () => {
 
     return new Promise((resolve, reject) => {
         if(Capacitor.isNativePlatform())
-            Geolocation.getCurrentPosition({ timeout: 10000 })
+            Geolocation.getCurrentPosition({ 
+                maximumAge: 600000, 
+                timeout: 30000, 
+                enableHighAccuracy: false 
+            })
                 .then( pos => resolver(pos, resolve) )
                 .catch(reject);
         else

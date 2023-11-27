@@ -104,17 +104,28 @@ export default class Datalogger {
     }
 
     start() {
-        if (this._intervalId || !this._hasLocationAccess ) 
-            return false;
-        this.route = [];
-        this.elapsed = 0;
-        this.distance = 0;
-        this._intervalId = setInterval(() => this._pushLocation(), this.sampleInterval);
-        KeepAwake.keepAwake();
-        this.startCallback();
-        this._pushLocation();
-        console.log("Datalogger started.");
-        return true;
+        return new Promise((resolve, reject) => {
+            if (this._intervalId) {
+                console.log("Datalogger already running");
+            } else {
+                isLocationAvailable()
+                    .then(() => {
+                        this.route = [];
+                        this.elapsed = 0;
+                        this.distance = 0;
+                        this._hasLocationAccess = true;
+                        this._intervalId = setInterval(() => this._pushLocation(), this.sampleInterval);
+                        KeepAwake.keepAwake();
+                        this.startCallback();
+                        this._pushLocation();
+                        resolve();
+                    })
+                    .catch(reject);
+            }
+        })
+        
+            
+        
     }
 
     stop() {
@@ -139,7 +150,7 @@ export default class Datalogger {
         if(this._hasLocationAccess)
             getUserLocation()
                 .then(currentLocation => {
-                    const time = Date.now();
+                    const time = Date.now(); // or use currentLocation.tmestamp;
                     const {lat, lng} = currentLocation;
                     if(this.route.length > 1){
                         const lastLocation = this.route.at(-1);

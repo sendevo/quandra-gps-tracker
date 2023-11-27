@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">quandra-gps-tracker</string>
-    <string name="title_activity_main">quandra-gps-tracker</string>
+    <string name="app_name">Quandra GPS Tracker</string>
+    <string name="title_activity_main">Quandra GPS Tracker</string>
     <string name="package_name">com.sendevo.quandragpstracker</string>
     <string name="custom_url_scheme">com.sendevo.quandragpstracker</string>
 </resources>

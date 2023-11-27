@@ -10,6 +10,7 @@ import theme from "./themes";
 import StateProvider from "./context/state";
 import DataloggerProvider from "./context/datalogger";
 import DatabaseProvider from "./context/database";
+import Navigation from "./components/Navigation";
 import Home from "./views/Home";
 import views from "./views";
 
@@ -29,6 +30,7 @@ const App = () => (
                             }
                             <Route path="*" element={<Navigate replace to="/" />} />
                         </Routes>
+                        <Navigation/>
                     </BrowserRouter>
                 </DataloggerProvider>
             </DatabaseProvider>
