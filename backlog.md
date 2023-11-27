@@ -10,7 +10,7 @@
   - [x] Guardar rutas al finalizar cada grabación.  
   - [x] Detener automáticamente luego de unos minutos sin desplazamientos.  
   - [x] Listar rutas guardadas.  
-  - [ ] Abrir rutas guardadas.  
+  - [x] Abrir rutas guardadas.  
   - [x] Configuración de la app:  
     - [x] Guardar configuracion en Preferences
     - [x] Agregar GUI de configuracion.  

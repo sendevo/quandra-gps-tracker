@@ -39,7 +39,7 @@ export const isLocationAvailable = () => {
 
 export const getUserLocation = () => {
     const resolver = (pos, callback) => {
-        const {latitude, longitude} = pos.route;
+        const {latitude, longitude} = pos.coords;
         callback({
             lat: latitude,
             lng: longitude

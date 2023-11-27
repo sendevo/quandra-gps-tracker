@@ -1,4 +1,4 @@
-package com.sendevo.quandraloggerapp;
+package com.sendevo.quandragpstracker;
 
 import com.getcapacitor.BridgeActivity;
 

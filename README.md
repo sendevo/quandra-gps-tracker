@@ -1,6 +1,6 @@
 <img src="images/quandra-banner.png" width="50%" style="margin-bottom: 50px"/>
 
-# Quandra Logger App
+# Quandra GPS Tracker
 
 Aplicación móvil para el registro de rutas vehiculares. Esta aplicación forma parte del proyecto Quandra, es de propósito general y permite exportar los datos de viaje via POST http indicando la URL de una API RESTful compatible.  
 
@@ -40,8 +40,8 @@ Los registros son anónimos y si la sincronización fue exitosa, la API responde
 
 1.- Descargar repo e instalar dependencias
 ```bash
-git clone https://github.com/sendevo/quandra-logger-app.git
-cd quandra-logger-app
+git clone https://github.com/sendevo/quandra-gps-tracker.git
+cd quandra-gps-tracker
 npm install
 npm run build
 ```

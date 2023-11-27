@@ -1,6 +1,6 @@
 {
-  "appId": "com.sendevo.quandraloggerapp",
-  "appName": "quandra-logger-app",
+  "appId": "com.sendevo.quandragpstracker",
+  "appName": "quandra-gps-tracker",
   "webDir": "dist",
   "server": {
     "androidScheme": "https"
